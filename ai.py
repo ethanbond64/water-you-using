@@ -66,6 +66,7 @@ def analyze_image(image_path):
                             headers={ "Content-Type": "application/json", "Authorization": f"Bearer {api_key}"}, 
                             json=payload)
     
-    print(response.json())
+    content = response.json()['choices'][0]['message']['content']
+    json_info = content.replace("```json", "").replace("```", "")
     
-    return json.loads(response.json()['choices'][0]['message']['content'])
+    return json.loads(json_info)
