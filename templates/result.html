@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>View results</title>
+    <title>Results - Water You Using</title>
     <style>
         .accordion {
             background-color: #eee;
@@ -31,19 +31,18 @@
 </head>
 <body>
 
-    <h1>View results</h1>
+    <h1>Wat-er You Using?</h1>
     <img src="{{ image_url }}" alt="Captured photo">
-    <div>
-        {{ info }}
-    </div>
 
-    <h2>Accordion Example</h2>
+    <h2>Analysis</h2>
+
+    <h3>Score: {{ score }}</h3>
 
     {% for key, value in info.items() %}
-    <button class="accordion">{{ key }}</button>
-    <div class="panel">
-    <p>{{ value }}</p>
-    </div>
+        <button class="accordion">{{ key }}</button>
+        <div class="panel">
+        <p>{{ value }}</p>
+        </div>
     {% endfor %}
 
     <script>

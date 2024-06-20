@@ -48,8 +48,10 @@ def status(uuid_str):
 @app.route('/view/<uuid_str>')
 def view(uuid_str):
     info = data.get(uuid_str, None)
-    return render_template("view.html", 
+    score = info.pop('score', 57)
+    return render_template("result.html", 
                            info=info,
+                           score=score,
                            image_url=url_for('static', filename='imgs/' + uuid_str + '.png'))
 
 if __name__ == '__main__':
