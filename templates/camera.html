@@ -6,9 +6,20 @@
 <body>
     <h1>Camera Capture</h1>
     <video id="video" width="640" height="480" autoplay></video>
+    <canvas id="canvas" width="640" height="480" style="display:none;"></canvas>
     <button id="capture">Capture Photo</button>
+    <form id="photo-form" method="POST" enctype="multipart/form-data" action="{{ submit_url }}">
+        <input type="hidden" name="image" id="image">
+    </form>
     <script>
+        // Access the device camera and stream to video element
         const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const context = canvas.getContext('2d');
+        const captureButton = document.getElementById('capture');
+        const imageInput = document.getElementById('image');
+        const photoForm = document.getElementById('photo-form');
+
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
                 video.srcObject = stream;
@@ -16,8 +27,12 @@
             });
         }
 
-        document.getElementById('capture').addEventListener('click', function() {
-            window.location.href = "{{ link }}";
+        // Capture the photo and submit the form
+        captureButton.addEventListener('click', function() {
+            context.drawImage(video, 0, 0, 640, 480);
+            const imageDataURL = canvas.toDataURL('image/png');
+            imageInput.value = imageDataURL;
+            photoForm.submit();
         });
     </script>
 </body>

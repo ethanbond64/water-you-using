@@ -1,0 +1,25 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Loading</title>
+</head>
+<body>
+    <h1>Loading</h1>
+    <script>
+
+    function pollStatus() {
+        const interval = setInterval(async function() {
+            const response = await fetch('{{ status_url }}');
+            const data = await response.json();
+            if (data.status) {
+                clearInterval(interval);
+                window.location.href = '{{ view_url }}';
+            }
+        }, 1000);  // Poll every 1 second
+    }
+
+    pollStatus();
+    </script>
+</body>
+</html>
