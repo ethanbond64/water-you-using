@@ -1,71 +1,71 @@
-# import os
-
-# from openai import OpenAI
-
-# client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
-
-# # Function to use OpenAI to extract text
-# def extract_text_from_image(image_bytes):
-#     response = client.Image.create_variation(
-#         image=image_bytes,
-#         prompt="Extract the ingredients list from this image",
-#         n=1,
-#         size="1024x1024"
-#     )
-#     return response['choices'][0]['text']
-
-# # Extract text from the image
-# extracted_text = extract_text_from_image()
-# print("Extracted Text:", extracted_text)
 import os
 import base64
+import json
 import requests
 
 from dotenv import load_dotenv
 
-load_dotenv()
+SYTEM_PROMPT = """
+You are an AI chatbot tasked with helping consumers make informed decisions about products with respect to their environmental impact, specifically water usage. 
+You have been trained on a dataset of product/food information and environmental impact data.
 
-# OpenAI API Key
+Users will upload images of the INGREDIENTS LIST of a product, and you will provide information on the water usage of the product.
+YOU WILL TAKE THE TOP 10 INGREDIENTS FROM THE INGREDIENTS LIST ONLY. FOR EACH INGREDIENT, YOU WILL PROVIDE A SENTENCE ON ITS WATER USAGE.
+FINALLY, YOU WILL PROVIDE A SCORE OUT OF 100 FOR THE PRODUCT WHERE 0 IS THE WORST WATER USAGE AND 100 IS THE MOST SUSTAINABLE WATER USAGE.
+
+The format of your response should be EXCLUSIVELY A SINGLE JSON OBJECT with the following format:
+{
+    "<ingredient1 by name>": "<sentence on water usage of ingredient1>",
+    "<ingredient2 by name>": "<sentence on water usage of ingredient2>",
+    ...
+    "score": <score out of 100>
+}
+"""
+
+USER_PROMPT = """
+I have uploaded the image of my product, please provide the water information for the product in the appropriate JSON format.
+"""
+
+load_dotenv()
 api_key = os.environ.get("OPENAI_API_KEY")
 
-# Function to encode the image
 def encode_image(image_path):
   with open(image_path, "rb") as image_file:
     return base64.b64encode(image_file.read()).decode('utf-8')
 
-# Path to your image
-image_path = "static/imgs/text.png"
+def analyze_image(image_path):
+    base64_image = encode_image(image_path)
 
-# Getting the base64 string
-base64_image = encode_image(image_path)
-
-headers = {
-  "Content-Type": "application/json",
-  "Authorization": f"Bearer {api_key}"
-}
-
-payload = {
-  "model": "gpt-4o",
-  "messages": [
-    {
-      "role": "user",
-      "content": [
-        {
-          "type": "text",
-          "text": "What’s in this image?"
-        },
-        {
-          "type": "image_url",
-          "image_url": {
-            "url": f"data:image/jpeg;base64,{base64_image}"
-          }
-        }
-      ]
+    payload = {
+        "model": "gpt-4o",
+        "messages": [
+            {
+                "role": "system",
+                "content": SYTEM_PROMPT
+            },
+            {
+                "role": "user",
+                "content": [
+                    {
+                        "type": "text",
+                        "text": USER_PROMPT
+                    },
+                    {
+                        "type": "image_url",
+                        "image_url": {
+                            "url": f"data:image/jpeg;base64,{base64_image}"
+                        }
+                    }
+                ]
+            }
+        ],
+        "max_tokens": 4096
     }
-  ],
-  "max_tokens": 300
-}
 
-response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload)
-
-print(response.json())
+    response = requests.post("https://api.openai.com/v1/chat/completions", 
+                            headers={ "Content-Type": "application/json", "Authorization": f"Bearer {api_key}"}, 
+                            json=payload)
+    
+    print(response.json())
+    
+    return json.loads(response.json()['choices'][0]['message']['content'])

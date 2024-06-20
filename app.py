@@ -1,5 +1,4 @@
 import base64
-import os
 import re
 import threading
 import time
@@ -8,6 +7,8 @@ import uuid
 from dotenv import load_dotenv
 from flask import Flask, render_template, request, url_for
 
+from ai import analyze_image
+
 load_dotenv()
 
 data = {}
@@ -15,8 +16,8 @@ data = {}
 app = Flask(__name__)
 
 def load(uuid_str):
-    time.sleep(5)
-    data[uuid_str] = True
+    info = analyze_image('static/imgs/' + uuid_str + '.png')
+    data[uuid_str] = info
 
 @app.route('/')
 def camera():
@@ -32,7 +33,7 @@ def submit():
     with open('static/imgs/' + uuid_str + '.png', 'wb') as f:
         f.write(image_data)
 
-    data[uuid_str] = False
+    data[uuid_str] = None
 
     threading.Thread(target=load, args=(uuid_str,)).start()
 
@@ -42,11 +43,13 @@ def submit():
 
 @app.route('/status/<uuid_str>')
 def status(uuid_str):
-    return {'status': data.get(uuid_str, False)}
+    return {'status': data.get(uuid_str, None) != None }
 
 @app.route('/view/<uuid_str>')
 def view(uuid_str):
+    info = data.get(uuid_str, None)
     return render_template("view.html", 
+                           info=str(info),
                            image_url=url_for('static', filename='imgs/' + uuid_str + '.png'))
 
 if __name__ == '__main__':
