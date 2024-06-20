@@ -1,10 +1,18 @@
 import base64
+import os
 import re
 import threading
 import time
 import uuid
 
+from dotenv import load_dotenv
 from flask import Flask, render_template, request, url_for
+from openai import OpenAI
+
+load_dotenv()
+
+client = OpenAI(
+    api_key=os.environ.get("OPENAI_API_KEY"),)
 
 data = {}
 
@@ -25,7 +33,7 @@ def submit():
     image_data = base64.b64decode(image_data)
 
     uuid_str = str(uuid.uuid4())
-    with open('imgs/' + uuid_str + '.png', 'wb') as f:
+    with open('static/imgs/' + uuid_str + '.png', 'wb') as f:
         f.write(image_data)
 
     data[uuid_str] = False
@@ -43,7 +51,7 @@ def status(uuid_str):
 @app.route('/view/<uuid_str>')
 def view(uuid_str):
     return render_template("view.html", 
-                           image_url='imgs/' + uuid_str + '.png')
+                           image_url=url_for('static', filename='imgs/' + uuid_str + '.png'))
 
 if __name__ == '__main__':
     app.run(debug=True)
