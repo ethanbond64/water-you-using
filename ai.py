@@ -65,7 +65,7 @@ def analyze_image(image_path):
     response = requests.post("https://api.openai.com/v1/chat/completions", 
                             headers={ "Content-Type": "application/json", "Authorization": f"Bearer {api_key}"}, 
                             json=payload)
-    
+    print(response.json())
     content = response.json()['choices'][0]['message']['content']
     json_info = content.replace("```json", "").replace("```", "")
     

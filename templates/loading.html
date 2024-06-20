@@ -1,25 +1,89 @@
-
 <!DOCTYPE html>
 <html>
 <head>
     <title>Loading - Water You Using</title>
+    <style>
+        /* Overall layout */
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0; /* Light background */
+        }
+
+        .navbar {
+            background-color: #3f82ef;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar-title {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .navbar-menu {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-menu-icon {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background-color: white;
+            cursor: pointer;
+            /* Placeholder icon style */
+        }
+
+        /* Loading screen */
+        .loading-container {
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .loading-text {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Loading</h1>
+
+    <div class="navbar">
+        <div class="navbar-title">Wat-er You Using?</div>
+        <div class="navbar-menu">
+                <svg width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4 18L20 18" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M4 12L20 12" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M4 6L20 6" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+        </div>
+    </div>
+    <div class="loading-container">
+        <img src="/static/water-loader.gif" height="200" width="200" alt="Loading..." style="max-width: 100%; max-height: 100vh;">
+    </div>
     <script>
 
-    function pollStatus() {
-        const interval = setInterval(async function() {
-            const response = await fetch('{{ status_url }}');
-            const data = await response.json();
-            if (data.status) {
-                clearInterval(interval);
-                window.location.href = '{{ view_url }}';
-            }
-        }, 1000);  // Poll every 1 second
-    }
-
-    pollStatus();
+        function pollStatus() {
+            const interval = setInterval(async function() {
+                const response = await fetch('{{ status_url }}');
+                const data = await response.json();
+                if (data.status) {
+                    clearInterval(interval);
+                    window.location.href = '{{ view_url }}';
+                }
+            }, 1000);  // Poll every 1 second
+        }
+    
+        pollStatus();
     </script>
 </body>
 </html>
