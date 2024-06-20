@@ -3,6 +3,57 @@
 <head>
     <title>Results - Water You Using</title>
     <style>
+        /* Overall layout */
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            display: flex;
+            height: 100%;
+        }
+
+        .left {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .right {
+            flex: 1;
+            padding: 20px;
+            border-left: 1px solid #ccc; /* Add border between left and right */
+        }
+
+        /* Score circle */
+        .score-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            color: white;
+            font-size: 24px;
+            line-height: 80px;
+            text-align: center;
+            margin: 0 auto;
+            margin-bottom: 20px;
+        }
+
+        /* Score colors */
+        .score-circle.red {
+            background-color: red;
+        }
+
+        .score-circle.yellow {
+            background-color: yellow;
+        }
+
+        .score-circle.green {
+            background-color: green;
+        }
+
+        /* Accordion styles */
         .accordion {
             background-color: #eee;
             border: none;
@@ -13,6 +64,7 @@
             font-size: 15px;
             transition: 0.4s;
             margin-bottom: 5px;
+            width: 100%; /* Ensure each accordion button spans full width */
         }
 
         .active, .accordion:hover {
@@ -26,24 +78,34 @@
             overflow: hidden;
             border: solid 1px #ccc;
             margin-bottom: 5px;
+            width: 100%; /* Ensure each panel spans full width */
         }
     </style>
 </head>
 <body>
 
     <h1>Wat-er You Using?</h1>
-    <img src="{{ image_url }}" alt="Captured photo">
 
-    <h2>Analysis</h2>
-
-    <h3>Score: {{ score }}</h3>
-
-    {% for key, value in info.items() %}
-        <button class="accordion">{{ key }}</button>
-        <div class="panel">
-        <p>{{ value }}</p>
+    <div class="container">
+        <div class="left">
+            <img src="{{ image_url }}" alt="Captured photo" style="max-width: 100%; height: auto;">
         </div>
-    {% endfor %}
+
+        <div class="right">
+            <div class="score-circle {% if score < 50 %}red{% elif score < 70 %}yellow{% else %}green{% endif %}">
+                {{ score }}
+            </div>
+
+            <h2>Analysis</h2>
+
+            {% for key, value in info.items() %}
+                <button class="accordion">{{ key }}</button>
+                <div class="panel">
+                    <p>{{ value }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
