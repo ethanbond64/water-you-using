@@ -15,8 +15,8 @@ FINALLY, YOU WILL PROVIDE A SCORE OUT OF 100 FOR THE PRODUCT WHERE 0 IS THE WORS
 
 The format of your response should be EXCLUSIVELY A SINGLE JSON OBJECT with the following format:
 {
-    "<ingredient1 by name>": "<sentence on water usage of ingredient1>",
-    "<ingredient2 by name>": "<sentence on water usage of ingredient2>",
+    "<name of first ingredient>": "<sentence on water usage of ingredient1>",
+    "<name of second ingredient>": "<sentence on water usage of ingredient2>",
     ...
     "score": <score out of 100>
 }

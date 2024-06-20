@@ -49,7 +49,7 @@ def status(uuid_str):
 def view(uuid_str):
     info = data.get(uuid_str, None)
     return render_template("view.html", 
-                           info=str(info),
+                           info=info,
                            image_url=url_for('static', filename='imgs/' + uuid_str + '.png'))
 
 if __name__ == '__main__':
