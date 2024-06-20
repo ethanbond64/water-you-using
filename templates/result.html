@@ -16,27 +16,32 @@
             height: 100%;
         }
 
-        .left {
+        .left, .right {
             flex: 1;
             padding: 20px;
+            display: flex;
+            justify-content: center; /* Center content horizontally */
+            align-items: center; /* Center content vertically */
+        }
+
+        .left {
+            text-align: center; /* Center image */
         }
 
         .right {
-            flex: 1;
-            padding: 20px;
+            flex-direction: column; /* Stack items vertically */
             border-left: 1px solid #ccc; /* Add border between left and right */
         }
 
         /* Score circle */
         .score-circle {
-            width: 80px;
-            height: 80px;
+            width: 100px;
+            height: 100px;
             border-radius: 50%;
             color: white;
             font-size: 24px;
-            line-height: 80px;
+            line-height: 100px;
             text-align: center;
-            margin: 0 auto;
             margin-bottom: 20px;
         }
 
@@ -47,6 +52,7 @@
 
         .score-circle.yellow {
             background-color: yellow;
+            color: black; /* Improve contrast for yellow circle */
         }
 
         .score-circle.green {
@@ -65,6 +71,7 @@
             transition: 0.4s;
             margin-bottom: 5px;
             width: 100%; /* Ensure each accordion button spans full width */
+            border-radius: 8px; /* Rounded corners */
         }
 
         .active, .accordion:hover {
@@ -72,13 +79,14 @@
         }
 
         .panel {
-            padding: 0 15px;
+            padding: 15px;
             background-color: white;
             display: none;
             overflow: hidden;
             border: solid 1px #ccc;
             margin-bottom: 5px;
             width: 100%; /* Ensure each panel spans full width */
+            border-radius: 8px; /* Rounded corners */
         }
     </style>
 </head>
@@ -88,7 +96,7 @@
 
     <div class="container">
         <div class="left">
-            <img src="{{ image_url }}" alt="Captured photo" style="max-width: 100%; height: auto;">
+            <img src="{{ image_url }}" alt="Captured photo" style="max-width: 100%; max-height: 100%; vertical-align: middle;">
         </div>
 
         <div class="right">

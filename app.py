@@ -1,7 +1,7 @@
 import base64
 import re
 import threading
-import time
+import json
 import uuid
 
 from dotenv import load_dotenv
@@ -47,8 +47,15 @@ def status(uuid_str):
 
 @app.route('/view/<uuid_str>')
 def view(uuid_str):
+    
     info = data.get(uuid_str, None)
+    
+    for key in info:
+        if "%" in key:
+            del info[key]
+    
     score = info.pop('score', 57)
+    
     return render_template("result.html", 
                            info=info,
                            score=score,
