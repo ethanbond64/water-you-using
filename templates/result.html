@@ -145,19 +145,42 @@
         </div>
 
         <div class="right">
-            <div class="score-circle {% if score < 50 %}red{% elif score < 70 %}yellow{% else %}green{% endif %}">
-                {{ score }}
+            <div style="display: flex; width: 100%; margin-top: 30px;">
+                <!-- Left half -->
+                <div style="flex: 1; display: flex; flex-direction: column; align-items: center;">
+                    <div class="score-circle {% if score < 50 %}red{% elif score < 70 %}yellow{% else %}green{% endif %}">
+                        {{ score }}
+                    </div>
+                    <label style="margin-top: 10px; font-size: 16px;">Overall Score out of 100</label>
+                </div>
+        
+                <!-- Right half -->
+                <div style="flex: 1; padding: 10px;">
+                    <p>
+                        Scores are derived from 3 characteristics:
+                    </p>
+                    <ol>
+                        <li>
+                            Water required for production
+                            <br>
+                            (liters / kg of product)
+                        </li>
+                        <li>Amount of the ingridient used in the product</li>
+                        <li>Type of water used (potable, grey, or black)</li>
+                    </ol>
+                </div>
             </div>
-
-            <h2>Analysis</h2>
-
+        
+            <h2 style="margin-top: 20px;">Analysis</h2>
+        
             {% for key, value in info.items() %}
                 <button class="accordion">{{ key }}</button>
                 <div class="panel">
-                    <p style="padding-top: 0px;margin-top: 0px; padding-bottom: 10px; margin-bottom: 10px;">{{ value }}</p>
+                    <p style="padding-top: 0px; margin-top: 0px; padding-bottom: 10px; margin-bottom: 10px;">{{ value }}</p>
                 </div>
             {% endfor %}
         </div>
+        
     </div>
 
     <script>
