@@ -12,7 +12,7 @@
         }
 
         .navbar {
-            background-color: #3f82ef;
+            background-color: #bae6fd;
             color: white;
             padding: 20px;
             display: flex;
@@ -123,12 +123,18 @@
 <body>
 
     <div class="navbar">
-        <div class="navbar-title">Wat-er You Using?</div>
+        <a href="/">
+            <div class="navbar-title">
+                <div class="navbar-title">
+                    <img src="/static/logo.png" height="80" width="90" alt="Logo" style="margin: 0px; padding: 0px;">
+                </div>
+            </div>
+        </a>
         <div class="navbar-menu">
                 <svg width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M4 18L20 18" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
-                    <path d="M4 12L20 12" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
-                    <path d="M4 6L20 6" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M4 18L20 18" stroke="#000000" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M4 12L20 12" stroke="#000000" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M4 6L20 6" stroke="#000000" stroke-width="2" stroke-linecap="round"/>
                 </svg>
         </div>
     </div>
@@ -148,7 +154,7 @@
             {% for key, value in info.items() %}
                 <button class="accordion">{{ key }}</button>
                 <div class="panel">
-                    <p>{{ value }}</p>
+                    <p style="padding-top: 0px;margin-top: 0px; padding-bottom: 10px; margin-bottom: 10px;">{{ value }}</p>
                 </div>
             {% endfor %}
         </div>

@@ -2,3 +2,4 @@ venv/
 /static/imgs/
 !/static/imgs/.keep
 .env
+ai.py
