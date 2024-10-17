@@ -32,6 +32,7 @@ def submit():
     uuid_str = str(uuid.uuid4())
     with open('static/imgs/' + uuid_str + '.png', 'wb') as f:
         f.write(image_data)
+        print('Wrote Image')
 
     data[uuid_str] = None
 
